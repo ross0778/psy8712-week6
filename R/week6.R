@@ -29,3 +29,26 @@ citations_tbl <- tibble(line = 1:length(citations_txt), cite = citations_txt) %>
          first_author = str_extract(cite, "^[^,]+, [A-Z]\\.(?: [A-Z]\\.)*")
          )
 # Analysis
+citations_tbl %>% 
+  summarise(
+    cites = n(),
+    first_authors = sum(!is.na(first_author)),
+    articles = sum(!is.na(journal_title)),
+    chapters = sum(!is.na(book_title))
+  )
+
+
+
+citations_tbl %>% 
+  filter(perf_ref, !is.na(journal_title)) %>% 
+  count(journal_name = journal_title, name = "frequency") %>% 
+  arrange(desc(frequency)) %>% 
+  head(10)
+  
+
+citations_tbl %>% 
+  count(citation = cite, name = "frequency") %>% 
+  arrange(desc(frequency)) %>% 
+  head(10)
+
+
